@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/SaiNageswarS/go-api-boot/server"
 	pb "github.com/anuragnitt/agri-backend/generated"
 )

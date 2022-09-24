@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package generated;
+
+option go_package = "github.com/anuragnitt/agri-backend/generated";
+
+message Shop {
+    string id = 1;
+    string catalogueId = 2;
+    string name = 3;
+    string owner = 4;
+    double distance = 5;
+}
+
+message SearchNearbyShopRequest {
+    string name = 1;
+    double latitude = 2;
+    double longitude = 3;
+    double distance = 4;
+}
+
+message SearchNearbyShopResponse {
+    Shop shop = 1;
+}
+
+service SearchNearbyShopService {
+    rpc SearchNearbyShop(SearchNearbyShopRequest) returns (stream SearchNearbyShopResponse);
+}

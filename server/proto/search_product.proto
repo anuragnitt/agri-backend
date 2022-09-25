@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package generated;
+
+option go_package = "github.com/anuragnitt/agri-backend/generated";
+
+message Product {
+    string id = 1;
+    string shopId = 2;
+    string name = 3;
+    uint32 price = 4;
+    string category = 5;
+}
+
+message SearchByProductRequest {
+    string name = 1;
+}
+
+message SearchByProductResponse {
+    Product product = 1;
+}
+
+message SearchByProductAttrRequest {
+    string name = 1;
+    uint32 minPrice = 2;
+    uint32 maxPrice = 3;
+    string category = 4;
+}
+
+service SearchByProductService {
+    rpc SearchByProduct(SearchByProductRequest) returns (stream SearchByProductResponse);
+    rpc SearchByProductAttr(SearchByProductAttrRequest) returns (stream SearchByProductResponse);
+}

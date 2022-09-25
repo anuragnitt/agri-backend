@@ -17,11 +17,11 @@ var connection *mongo.Client = nil
 func newMongoConn() *mongo.Client {
 	mongoUri := os.Getenv("MONGO_URI")
 
-	// credential := options.Credential{
-	// 	Username: os.Getenv("MONGO_ADMIN_USERNAME"),
-	// 	Password: os.Getenv("MONGO_ADMIN_PASSWORD"),
-	// }
-	mongoOpts := options.Client().ApplyURI(mongoUri)//.SetAuth(credential)
+	credential := options.Credential{
+		Username: os.Getenv("MONGO_USERNAME"),
+		Password: os.Getenv("MONGO_PASSWORD"),
+	}
+	mongoOpts := options.Client().ApplyURI(mongoUri).SetAuth(credential)
 	// mongoOpts.TLSConfig.MinVersion = tls.VersionTLS12
 	// make sure to install ca-certs in docker image.
 	// mongoOpts.TLSConfig.InsecureSkipVerify = true

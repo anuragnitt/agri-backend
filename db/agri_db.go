@@ -31,7 +31,7 @@ func (a *AgriDb) Product() *ProductRepository {
 func (a *AgriDb) Catalogue() *CatalogueRepository {
 	baseRepo := odm.AbstractRepository[models.Catalogue]{
 		Database: os.Getenv("AGRI_DB"),
-		CollectionName: os.Getenv("CTALOGUE_COLLECTION"),
+		CollectionName: os.Getenv("CATALOGUE_COLLECTION"),
 	}
 
 	return &CatalogueRepository{baseRepo}

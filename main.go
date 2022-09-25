@@ -5,8 +5,8 @@ import (
 	pb "github.com/anuragnitt/agri-backend/generated"
 )
 
-var grpcPort = ":4000"
-var webPort = ":4001"
+var grpcPort = ":8081"
+var webPort = ":8080"
 
 func main() {
 	server.LoadSecretsIntoEnv(false)

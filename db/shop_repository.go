@@ -13,7 +13,7 @@ type ShopRepository struct {
 	odm.AbstractRepository[models.Shop]
 }
 
-func (s *ShopRepository) GetNearbyShops(name string, latitude, longitude, maxDistance float64) (chan []models.Shop, chan error) {
+func (s *ShopRepository) GetNearbyShops(name string, longitude, latitude, maxDistance float64) (chan []models.Shop, chan error) {
 	ch := make(chan []models.Shop)
 	errorChan := make(chan error)
 
@@ -23,7 +23,7 @@ func (s *ShopRepository) GetNearbyShops(name string, latitude, longitude, maxDis
 				"$nearSphere": bson.M{
 					"$geometry": bson.M{
 						"type": "Point",
-						"coordinates": []float64{latitude, longitude},
+						"coordinates": []float64{longitude, latitude},
 					},
 					"$maxDistance": maxDistance,
 				},
@@ -32,7 +32,7 @@ func (s *ShopRepository) GetNearbyShops(name string, latitude, longitude, maxDis
 		if len(name) > 0 {
 			filters["name"] = bson.M{
 				"$regex": fmt.Sprintf(".*%v.*", name),
-				"$option": "i",
+				"$options": "i",
 			}
 		}
 

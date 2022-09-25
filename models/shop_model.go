@@ -6,24 +6,24 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type Coordinates struct {
-	Latitude	float64		`bson:"latitude" json:"latitude"`
-	Longitude	float64		`bson:"longitude" json:"longitude"`
+type Location struct {
+	Type		string		`bson:"type" json:"type"`
+	Coordinates	[]float64	`bson:"coordinates" json:"coordinates"`
 }
 
 type Shop struct {
 	ShopId		primitive.ObjectID	`bson:"_id" json"_id"`
 	CatalogueId	primitive.ObjectID	`bson:"catalogueId" json"catalogueId"`
-	Location	Coordinates			`bson:"location" json:"location"`
+	Location	Location			`bson:"location" json:"location"`
 	Name		string				`bson:"name" json:"name"`
 	Owner		string				`bson:"owner" json:"owner"`
 }
 
-func (c *Coordinates) Distance(latitude, longitude float64) float64 {	
-	radlat1 := float64(math.Pi * c.Latitude / 180)
+func (l *Location) Distance(longitude, latitude float64) float64 {	
+	radlat1 := float64(math.Pi * l.Coordinates[1] / 180)
 	radlat2 := float64(math.Pi * latitude / 180)
 
-	theta := float64(c.Longitude - longitude)
+	theta := float64(l.Coordinates[0] - longitude)
 	radtheta := float64(math.Pi * theta / 180)
 	
 	dist := math.Sin(radlat1) * math.Sin(radlat2) + math.Cos(radlat1) * math.Cos(radlat2) * math.Cos(radtheta);
@@ -31,7 +31,7 @@ func (c *Coordinates) Distance(latitude, longitude float64) float64 {
 
 	dist = math.Acos(dist)
 	dist = dist * 180 / math.Pi
-	dist = dist * 60 * 1.1515
-	
+	dist = dist * 60 * 1.1515 * 1609.34
+
 	return dist
 }

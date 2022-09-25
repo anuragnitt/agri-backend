@@ -29,8 +29,8 @@ func (s *SearchNearbyShopService) AuthFuncOverride(ctx context.Context, fullMeth
 
 func (s *SearchNearbyShopService) SearchNearbyShop(req *pb.SearchNearbyShopRequest, stream pb.SearchNearbyShopService_SearchNearbyShopServer) error {
 	name := strings.TrimSpace(req.GetName())
-	lat := req.GetLatitude()
 	long := req.GetLongitude()
+	lat := req.GetLatitude()
 	dist := req.GetDistance()
 
 	if (lat < -90 || lat > 90) {
@@ -41,7 +41,7 @@ func (s *SearchNearbyShopService) SearchNearbyShop(req *pb.SearchNearbyShopReque
 		return status.Error(codes.InvalidArgument, "Invalid value for distance")
 	}
 
-	resChan, errChan := s.db.Shop().GetNearbyShops(name, lat, long, dist)
+	resChan, errChan := s.db.Shop().GetNearbyShops(name, long, lat, dist)
 
 	select {
 	case shops := <- resChan:
@@ -52,10 +52,10 @@ func (s *SearchNearbyShopService) SearchNearbyShop(req *pb.SearchNearbyShopReque
 					CatalogueId: shop.CatalogueId.Hex(),
 					Name: shop.Name,
 					Owner: shop.Owner,
-					Distance: shop.Location.Distance(lat, long),
+					Distance: shop.Location.Distance(long, lat),
 				},
 			}
-	
+
 			stream.Send(shopRes)
 		}
 
